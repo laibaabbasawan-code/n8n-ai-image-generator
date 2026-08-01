@@ -1,0 +1,147 @@
+{
+  "name": "My workflow 7",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dc24a80a-8382-4e9c-bbba-58441c09414a",
+              "name": "prompt",
+              "value": "={{ $json.prompt }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        128,
+        32
+      ],
+      "id": "61b3b2bc-83ce-462b-b6c8-84ae35ae46c8",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "url": "=https://image.pollinations.ai/prompt/{{$json.prompt}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        384,
+        48
+      ],
+      "id": "21712aa8-f415-4ea4-9963-0c55242f33e4",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "table": {
+          "__rl": true,
+          "value": " image_prompts",
+          "mode": "name"
+        },
+        "dataMode": "defineBelow",
+        "valuesToSend": {
+          "values": [
+            {
+              "column": "prompt",
+              "value": "={{ $json.prompt }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.5,
+      "position": [
+        624,
+        0
+      ],
+      "id": "3bd0febd-920c-4c5d-a55b-1ddc77e88c66",
+      "name": "Insert rows in a table",
+      "credentials": {
+        "mySql": {
+          "id": "Ex1vzMeeTTYyxKiL",
+          "name": "MySQL account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "rcreation of picture through AI",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "prompt"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        -128,
+        -16
+      ],
+      "id": "8490ab94-77cc-4a96-a71b-88ab1b21d4ff",
+      "name": "On form submission",
+      "webhookId": "91aa11dd-a2dc-489e-95cb-59eec4a14a6c"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "d81b958f-1135-4cc2-9f91-311b4cbb72c7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "456e738988e3b329601d94c36fc604d84b07f1ae5c351a97bdb3bbc12fbd9ae1"
+  },
+  "nodeGroups": [],
+  "id": "M5iec65rNKnnAdF7",
+  "tags": []
+}
